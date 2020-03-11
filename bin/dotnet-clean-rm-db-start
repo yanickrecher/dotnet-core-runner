@@ -1,0 +1,47 @@
+#!/bin/bash
+
+. settings
+
+help=""
+
+# get options/arguments
+while getopts :v:h option
+do
+    case "${option}"
+    in
+        h) help="help";;
+        v) variable=${OPTARG};;
+    esac
+done
+
+
+
+# display help
+# -------------------------------------------------------------------------
+
+if [ "${help}" == "help" ]; then
+
+cat << EOF
+
+-------------------------------------------------------------------------
+HELP 
+-------------------------------------------------------------------------
+Starte Dotnet Projekt anhand der aufgesetzen umgebung in Projectlist
+-------------------------------------------------------------------------
+
+EOF
+exit
+fi
+
+
+if [ -f $projectconfig_folder$1".yaml" ]; then 
+    
+    . dotnet-rm-db $1
+
+    . dotnet-clean-start $1
+
+    exit
+fi
+
+echo
+echo "Config: ${projectconfig_folder}$1.yaml nicht gefunden. "; echo "Abbruch"; echo 

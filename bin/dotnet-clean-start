@@ -1,0 +1,63 @@
+#!/bin/bash
+
+. settings
+
+help=""
+
+# get options/arguments
+while getopts :v:h option
+do
+    case "${option}"
+    in
+        h) help="help";;
+        v) variable=${OPTARG};;
+    esac
+done
+
+
+
+# display help
+# -------------------------------------------------------------------------
+
+if [ "${help}" == "help" ]; then
+
+cat << EOF
+
+-------------------------------------------------------------------------
+HELP 
+-------------------------------------------------------------------------
+Starte Dotnet Projekt anhand der aufgesetzen umgebung in Projectlist
+-------------------------------------------------------------------------
+
+EOF
+exit
+fi
+
+
+if [ -f $projectconfig_folder$1".yaml" ]; then 
+    . yaml-read-dotnet $projectconfig_folder$1".yaml"
+
+    . set-string-to-env $envVars
+
+    cd ${repoPath}${backendPath}
+
+    echo
+    echo"Starte 'dotnet-clean-start'.";
+    echo 
+
+    dotnet clean
+
+    dotnet build
+
+    echo ${repoPath}${dotnetappsettings}
+
+    cd ${repoPath}${dotnetappsettings}
+
+    dotnet run
+    # dotnet ${repoPath}${dotnetdllPath}
+
+    exit
+fi
+
+echo
+echo "Config: ${projectconfig_folder}$1.yaml nicht gefunden. "; echo "Abbruch"; echo 

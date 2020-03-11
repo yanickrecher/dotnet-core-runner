@@ -1,0 +1,9 @@
+projectPath: "project-base/"
+backendPath: "project-base/Backend/"
+dotnetappsettings: "project-base/Backend/Web/Web.WebApi/"
+dotnetdllPath: "project-base/Backend/Web/Web.WebApi/bin/Debug/netcoreapp2.1/Web.WebApi.dll"
+envVars: "ASPNETCORE_ENVIRONMENT=MacOS,ASPNETCORE_URLS=http://localhost:65443"
+docker_db_name: dockermssqlname
+docker_db_pw: dockerdbpw
+docker_backup_path: /var/opt/mssql/data/
+docker_db_initial_query: update dbo.users set RoleId="3", Unitid="4" where someid="234"

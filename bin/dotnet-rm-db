@@ -1,0 +1,51 @@
+#!/bin/bash
+
+. settings
+
+help=""
+
+# get options/arguments
+while getopts :v:h option
+do
+    case "${option}"
+    in
+        h) help="help";;
+        v) variable=${OPTARG};;
+    esac
+done
+
+
+
+# display help
+# -------------------------------------------------------------------------
+
+if [ "${help}" == "help" ]; then
+
+cat << EOF
+
+-------------------------------------------------------------------------
+HELP 
+-------------------------------------------------------------------------
+Löscht die definierte Datenbank in Docker
+-------------------------------------------------------------------------
+
+EOF
+exit
+fi
+
+
+if [ -f $projectconfig_folder$1".yaml" ]; then 
+    . yaml-read-dotnet $projectconfig_folder$1".yaml"
+
+    docker stop $docker_db_name
+
+    docker start $docker_db_name
+
+    docker exec -it collapp /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${docker_db_pw} -Q "Drop database collapp"
+
+else
+
+    echo
+    echo "Config: ${projectconfig_folder}$1.yaml nicht gefunden. "; echo "Abbruch"; echo 
+
+fi

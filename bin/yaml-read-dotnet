@@ -1,0 +1,36 @@
+#!/bin/bash
+#
+# Variabeln aus .siteconfig.yaml in die Bash-Shell laden
+
+
+# get options/arguments
+while getopts h:p: option
+do
+    case "${option}"
+    in
+        h) help="help";;
+        p) projectpath_arg=${OPTARG};;
+    esac
+done
+
+
+if [[ "${help}" == "help" ]]; then
+cat << EOF
+
+-------------------------------------------------------------------------
+HELP
+-------------------------------------------------------------------------
+Liest das Konfigurationsfile aus dem Projektverzeichnis aus.
+-------------------------------------------------------------------------
+
+EOF
+exit
+fi
+
+echo "Siteconfig wird ausgelesen"
+echo ""
+
+path_to_script="${BASH_SOURCE%/*}/_php/yaml-read.php"
+path_to_config=$1
+
+eval $(php ${path_to_script} -- "$1");

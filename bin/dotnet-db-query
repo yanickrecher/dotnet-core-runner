@@ -1,0 +1,49 @@
+#!/bin/bash
+
+. settings
+
+help=""
+
+# get options/arguments
+while getopts :v:h option
+do
+    case "${option}"
+    in
+        h) help="help";;
+        v) variable=${OPTARG};;
+    esac
+done
+
+
+
+# display help
+# -------------------------------------------------------------------------
+
+if [ "${help}" == "help" ]; then
+
+cat << EOF
+
+-------------------------------------------------------------------------
+HELP 
+-------------------------------------------------------------------------
+Führe einen db Query aus
+-------------------------------------------------------------------------
+
+EOF
+exit
+fi
+
+
+if [ -f $projectconfig_folder$1".yaml" ]; then 
+    . yaml-read-dotnet $projectconfig_folder$1".yaml"
+
+    echo $2
+
+    docker exec -it ${docker_db_name} /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${docker_db_pw} -Q "use ${docker_db_name}; $2"
+
+else
+
+    echo
+    echo "Config: ${projectconfig_folder}$1.yaml nicht gefunden. "; echo "Abbruch"; echo 
+
+fi

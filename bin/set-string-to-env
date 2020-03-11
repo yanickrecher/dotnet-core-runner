@@ -1,0 +1,39 @@
+#!/bin/bash
+
+help=""
+
+# get options/arguments
+while getopts :v:h option
+do
+    case "${option}"
+    in
+        h) help="help";;
+        v) variable=${OPTARG};;
+    esac
+done
+
+
+
+# display help
+# -------------------------------------------------------------------------
+
+if [ "${help}" == "help" ]; then
+
+cat << EOF
+
+-------------------------------------------------------------------------
+HELP 
+-------------------------------------------------------------------------
+Erwartet ein seprierter sting (,) und setzt diese als ENV Vars
+-------------------------------------------------------------------------
+
+EOF
+exit
+fi
+
+IFS=',' read -r -a env_list <<< "$1"
+
+for env in "${env_list[@]}"
+do
+    export $env
+done

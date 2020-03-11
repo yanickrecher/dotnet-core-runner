@@ -1,0 +1,43 @@
+#!/bin/bash
+
+help=""
+
+# get options/arguments
+while getopts :v:h option
+do
+    case "${option}"
+    in
+        h) help="help";;
+        v) variable=${OPTARG};;
+    esac
+done
+
+
+
+# display help
+# -------------------------------------------------------------------------
+
+if [ "${help}" == "help" ]; then
+
+cat << EOF
+
+-------------------------------------------------------------------------
+HELP 
+-------------------------------------------------------------------------
+Starte die Docker Umgebung anhand der aufgesetzen umgebung in Projectlist
+-------------------------------------------------------------------------
+
+EOF
+exit
+fi
+
+# Prüfe .siteconfig.yaml
+if [ ! -e .siteconfig.yaml ]
+then
+    echo
+    echo "In diesem Verzeichnis ist kein .siteconfig.yaml File zu finden. "; echo "Abbruch"; echo ""
+    exit
+fi
+
+# read .siteconfig.yaml
+. yaml-read-dotnet

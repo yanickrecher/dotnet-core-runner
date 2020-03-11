@@ -1,0 +1,6 @@
+#!/bin/bash
+userPath=/Users/recheryanick/
+repoPath=${userPath}repos/
+workflow=${userPath}workflow/
+projectconfig_folder=${workflow}projectconfigs/
+projectdbdump_folder=${workflow}db-dumps/
